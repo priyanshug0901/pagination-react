@@ -1,5 +1,5 @@
 import "./post.css"
-
+import React from 'react'
 export default function Post(props) {
   const { id, title, body } = props.data;
   return (

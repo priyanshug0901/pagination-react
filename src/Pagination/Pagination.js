@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import './pagination.css';
 
 export default function Pagniation(
-  data,
+  {data,
   RenderComponent,
   title,
   pageLimit,
-  dataLimit
+  dataLimit}
 ) {
   const [page] = useState(useState(Math.round(data.length / dataLimit)));
   const [currentPage, setCurrentPage] = useState(1);
-
+  
   function goToNextPage() {
     return setCurrentPage(page => page + 1);
   }
@@ -23,6 +23,7 @@ export default function Pagniation(
   function changePage(event) {
     // not yet implemented
     const pageNumber = Number(event.target.textContent);
+    console.log(pageNumber);
     setCurrentPage(pageNumber);
   }
 
@@ -30,24 +31,30 @@ export default function Pagniation(
     // not yet implemented
     const strtIdx = currentPage * dataLimit - dataLimit;
     const endIdx = strtIdx + dataLimit;
-    console.log(typeof data);
-    return data.slice(strtIdx, endIdx);
+
+    const newData = Object.values(data);
+    // console.log(typeof data, newData);
+    return newData.slice(strtIdx, endIdx);
   };
 
   const getPaginationGroup = () => {
-    // not yet implemented
+    // not yet implemented  4/5
     let start = Math.floor((currentPage - 1) / pageLimit) * pageLimit;
+    console.log(pageLimit);
     return new Array(pageLimit).fill().map((_, idx) => start + idx + 1);
   };
+  console.log(getPaginationGroup());
 
   return (
     <div>
       <h1>{title}</h1>
+
+
       {/* showing 10 posts at a time */}
 
       <div className="dataContainer">
-        {getPaginatedData().map((d, idx) => (
-          <RenderComponent key={idx} data={d} />
+        {getPaginatedData().map((val, idx) => (
+          <RenderComponent key={idx} data={val} />
         ))}
       </div>
 
@@ -81,11 +88,12 @@ export default function Pagniation(
         {/* next button */}
 
         <button
-          className={`next ${currentPage === pages ? 'disabled' : ''}`}
+          className={`next ${currentPage === page ? 'disabled' : ''}`}
           onClick={goToNextPage}
         >
           next
         </button>
+        
       </div>
     </div>
   );
